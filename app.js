@@ -3,7 +3,8 @@
 // load modules
 const express = require("express");
 const morgan = require("morgan");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
+
 
 // Load Rotues
 const api = require("./routes/api");
@@ -22,7 +23,9 @@ const app = express();
 app.use(morgan("dev"));
 
 // set body parser
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.urlencoded({ extended: false })); //! deprecated
+app.use(express.json());
+
 
 // setup a friendly greeting for the root route
 app.get("/", (req, res) => {
