@@ -5,7 +5,6 @@ const express = require("express");
 const morgan = require("morgan");
 // const bodyParser = require("body-parser");
 
-
 // Load Rotues
 const api = require("./routes/api");
 
@@ -25,7 +24,6 @@ app.use(morgan("dev"));
 // set body parser
 // app.use(bodyParser.urlencoded({ extended: false })); //! deprecated
 app.use(express.json());
-
 
 // setup a friendly greeting for the root route
 app.get("/", (req, res) => {
@@ -60,5 +58,6 @@ app.set("port", process.env.PORT || 5000);
 
 // start listening on our port
 const server = app.listen(app.get("port"), () => {
+    db.sequelize.sync();
     console.log(`Express server is listening on port ${server.address().port}`);
 });
