@@ -34,7 +34,7 @@ module.exports = Userss = sequelize => {
                 allowNull: false
             }
         },
-        { sequelize, paranoid: true }
+        { sequelize }
     );
 
     return Users;

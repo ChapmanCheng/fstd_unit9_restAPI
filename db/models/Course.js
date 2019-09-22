@@ -24,9 +24,8 @@ module.exports = Courses = sequelize => {
                 allowNull: true
             }
         },
-        { sequelize, paranoid: true }
+        { sequelize }
     );
-
 
     return Courses;
 };
