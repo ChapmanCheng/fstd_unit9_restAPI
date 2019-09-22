@@ -4,6 +4,9 @@
 const express = require("express");
 const morgan = require("morgan");
 
+// Load Rotues
+const api = require("./routes/api");
+
 // load db
 const db = require("./db/index");
 
@@ -25,6 +28,8 @@ app.get("/", (req, res) => {
         message: "Welcome to the REST API project!"
     });
 });
+
+app.use("/api", api);
 
 // send 404 if no other route matched
 app.use((req, res) => {
