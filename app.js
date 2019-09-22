@@ -3,6 +3,7 @@
 // load modules
 const express = require("express");
 const morgan = require("morgan");
+const bodyParser = require("body-parser");
 
 // Load Rotues
 const api = require("./routes/api");
@@ -20,7 +21,8 @@ const app = express();
 // setup morgan which gives us http request logging
 app.use(morgan("dev"));
 
-// TODO setup your api routes here
+// set body parser
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // setup a friendly greeting for the root route
 app.get("/", (req, res) => {
