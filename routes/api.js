@@ -4,6 +4,7 @@ const router = express.Router();
 
 // Middleware
 const bcrypt = require("bcryptjs");
+const auth = require("basic-auth");
 
 // db
 const db = require("../db");
@@ -11,10 +12,11 @@ const { Courses, Users } = db.Model;
 
 router.post("/users", async (req, res) => {
     const user = req.body;
-router
-    .route("/users")
-    .get((req, res) => res.status(200).json())
-    .post((req, res) => res.status(201).redirect("/"));
+    // TODO: hash user password
+    const salt = bcrypt.genSaltSync(10);
+    user.password = bcrypt.hashSync(user.password, salt);
+    console.log("password: " + user.password);
+    await Users.create(user);
 
     res.status(201).redirect("/");
 });
@@ -35,8 +37,13 @@ router.get("/courses/:id", (req, res) => {
 /**
  * * FOLLOWING LINKS REQUIRE AUTHENTICATION
  */
-    ) // is
-    .post((req, res) => {
+// app.use((req, res, next) => {
+//     const user = auth(req);
+//     if (user) {
+//     } else {
+//         res.status(401).end();
+//     }
+// });
 router.get("/users", (req, res) => res.status(200).json());
 router.post("/courses", (req, res) => {
     console.log(req.body);
