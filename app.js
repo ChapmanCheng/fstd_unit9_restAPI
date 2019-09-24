@@ -6,7 +6,8 @@ const morgan = require("morgan");
 // const bodyParser = require("body-parser");
 
 // Load Rotues
-const api = require("./routes/api");
+const userRoutes = require("./routes/user");
+const courseRoutes = require("./routes/courses");
 
 // load db
 const db = require("./db/index");
@@ -32,7 +33,8 @@ app.get("/", (req, res) => {
     });
 });
 
-app.use("/api", api);
+app.use("/api/users/", userRoutes);
+app.use("/api/courses/", courseRoutes);
 
 // send 404 if no other route matched
 app.use((req, res) => {
