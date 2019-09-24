@@ -26,7 +26,7 @@ router
             .catch(err => next(err))
     )
 
-    .post(courseValidation, (req, res, next) => {
+    .post(authenticateUser, courseValidation, (req, res, next) => {
         const errors = validationResult(req);
 
         if (!errors.isEmpty()) {
