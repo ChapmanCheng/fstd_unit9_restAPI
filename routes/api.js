@@ -12,8 +12,11 @@ const { Courses, Users } = db.Model;
 
 router.post("/users", async (req, res) => {
 	const user = req.body;
-	user.password = bcrypt.hashSync(user.password.toString(), 10);
-	Users.create(user).then(() => res.status(201).redirect("/"));
+	user.password = bcrypt.hashSync(user.password.toString(), 10); //
+	// user contains "password", "firstName", "lastName", "email"
+	Users.create(user)
+		.then(() => res.status(201).end())
+		.catch(err => console.error(err));
 });
 
 router.get("/courses", (req, res) =>
