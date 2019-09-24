@@ -12,13 +12,8 @@ const { Courses, Users } = db.Model;
 
 router.post("/users", async (req, res) => {
 	const user = req.body;
-	// TODO: hash user password
-	const salt = bcrypt.genSaltSync(10);
-	user.password = bcrypt.hashSync(user.password, salt);
-	console.log("password: " + user.password);
-	await Users.create(user);
-
-	res.status(201).redirect("/");
+	user.password = bcrypt.hashSync(user.password.toString(), 10);
+	Users.create(user).then(() => res.status(201).redirect("/"));
 });
 
 router.get("/courses", (req, res) =>
@@ -44,7 +39,7 @@ router.get("/courses/:id", (req, res) => {
 //         res.status(401).end();
 //     }
 // });
-router.get("/users", (req, res) => res.status(200).json());
+router.get("/users", (req, res) => res.status(200).json()); //TODO: need to return current authed user
 router.post("/courses", (req, res) => {
 	// req.body contains "title", "description", "userId", "estimatedTime" (allowNull), "materialsNeeded"(allowNull)
 	Courses.create(req.body)
