@@ -16,10 +16,11 @@ module.exports = [
         .isEmpty()
         .withMessage("Last Name missing"),
     check("emailAddress")
-        .isEmail()
         .not()
         .isEmpty()
-        .withMessage("Email missing"),
+        .withMessage("Email missing")
+        .isEmail()
+        .withMessage("This is not an email"),
     check("password")
         .not()
         .isEmpty()
