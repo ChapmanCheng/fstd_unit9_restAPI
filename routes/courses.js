@@ -3,8 +3,9 @@ const express = require("express");
 const router = express.Router();
 
 // Middleware
-const authenticateUser = require("../expressMiddlewares/authenticateUser");
 const bcrypt = require("bcryptjs");
+const authenticateUser = require("../expressMiddlewares/authenticateUser");
+const checkSameUserId = require("../expressMiddlewares/checkSameUserId");
 
 // db
 const db = require("../db");
@@ -34,11 +35,15 @@ router
             .then(course => res.json(course))
             .catch(err => next(err));
     })
+    .put(authenticateUser, checkSameUserId, (req, res, next) => {
         const { id } = req.params;
-                .then(() => res.status(204).end())
-                .catch(err => next(err));
+        // req.body contains "title", "description", "userId", "estimatedTime" (allowNull), "materialsNeeded"(allowNull)
+        Courses.findByPk(id)
+            .then(course => course.update(req.body))
+            .then(() => res.status(204).end())
+            .catch(err => next(err));
     })
-    .delete(authenticateUser, (req, res, next) => {
+    .delete(authenticateUser, checkSameUserId, (req, res, next) => {
         const { id } = req.params;
         Courses.findByPk(id)
             .then(course => course.destroy())
