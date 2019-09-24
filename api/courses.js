@@ -33,10 +33,10 @@ router
             const errorMessages = errors.array().map(err => err.msg);
             return res.status(400).json({ errors: errorMessages });
         } else {
-        // req.body contains "title", "description", "userId", "estimatedTime" (allowNull), "materialsNeeded"(allowNull)
-        Courses.create(req.body)
-            .then(() => res.status(201).end())
-            .catch(err => next(err));
+            // req.body contains "title", "description", "userId", "estimatedTime" (allowNull), "materialsNeeded"(allowNull)
+            Courses.create(req.body)
+                .then(() => res.status(201).end())
+                .catch(err => next(err));
         }
     });
 
@@ -51,14 +51,26 @@ router
             .then(course => res.json(course))
             .catch(err => next(err));
     })
-    .put(authenticateUser, checkSameUserId, (req, res, next) => {
-        const { id } = req.params;
-        // req.body contains "title", "description", "userId", "estimatedTime" (allowNull), "materialsNeeded"(allowNull)
-        Courses.findByPk(id)
-            .then(course => course.update(req.body))
-            .then(() => res.status(204).end())
-            .catch(err => next(err));
-    })
+    .put(
+        authenticateUser,
+        courseValidation,
+        checkSameUserId,
+        (req, res, next) => {
+            const errors = validationResult(req);
+
+            if (!errors.isEmpty()) {
+                const errorMessages = errors.array().map(err => err.msg);
+                return res.status(400).json({ errors: errorMessages });
+            } else {
+                const { id } = req.params;
+                // req.body contains "title", "description", "userId", "estimatedTime" (allowNull), "materialsNeeded"(allowNull)
+                Courses.findByPk(id)
+                    .then(course => course.update(req.body))
+                    .then(() => res.status(204).end())
+                    .catch(err => next(err));
+            }
+        }
+    )
     .delete(authenticateUser, checkSameUserId, (req, res, next) => {
         const { id } = req.params;
         Courses.findByPk(id)
