@@ -6,8 +6,8 @@ const morgan = require("morgan");
 // const bodyParser = require("body-parser");
 
 // Load Rotues
-const userRoutes = require("./routes/user");
-const courseRoutes = require("./routes/courses");
+const userRoutes = require("./api/user");
+const courseRoutes = require("./api/courses");
 
 // load db
 const db = require("./db/index");

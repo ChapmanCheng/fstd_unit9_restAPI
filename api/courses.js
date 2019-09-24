@@ -3,13 +3,12 @@ const express = require("express");
 const router = express.Router();
 
 // Middleware
-const bcrypt = require("bcryptjs");
 const authenticateUser = require("../expressMiddlewares/authenticateUser");
 const checkSameUserId = require("../expressMiddlewares/checkSameUserId");
 
 // db
 const db = require("../db");
-const { Courses, Users } = db.Model;
+const { Courses } = db.Model;
 
 // routes for "/api/courses"
 router
