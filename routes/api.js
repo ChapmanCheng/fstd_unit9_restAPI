@@ -10,13 +10,35 @@ const auth = require("basic-auth");
 const db = require("../db");
 const { Courses, Users } = db.Model;
 
-const authenticateUser = (req, res, next) => {
-	next();
+// TODO: take it out and make a module out of it
+const authenticateUser = async (req, res, next) => {
+	const cred = auth(req);
+	if (cred) {
+		const user = await Users.findOne({
+			where: { emailAddress: cred.emailAddress }
+		});
+		if (user) {
+			const authentication = bcrypt.compareSync(
+				cred.password,
+				user.password
+			);
+			if (authentication) {
+				req.currentUser = user;
+				return next();
+			}
+		}
+	}
+	return res.status(401).end();
 };
 
 router
 	.route("/users")
-	.get(authenticateUser, (req, res) => res.status(200).json()) //TODO: need to return current authed user
+	.get(authenticateUser, (req, res) => {
+		//TODO: need to return current authed user
+		const user = req.currentUser;
+		console.log(user);
+		res.status(200).json();
+	})
 	.post(async (req, res, next) => {
 		const user = req.body;
 		user.password = bcrypt.hashSync(user.password.toString(), 10); //
