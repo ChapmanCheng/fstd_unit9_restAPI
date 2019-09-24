@@ -19,7 +19,7 @@ router
     .route("/")
     .get((req, res, next) =>
         Courses.findAll({
-            attributes: { exclude: ["createdAt", "updatedAt"] }
+            attributes: { exclude: ["createdAt", "updatedAt"] },
         })
             .then(courses => res.json(courses))
             .catch(err => next(err))
@@ -36,6 +36,7 @@ router
         Courses.create(req.body)
             .then(() => res.status(201).end())
             .catch(err => next(err));
+        }
     });
 
 router
@@ -43,7 +44,7 @@ router
     .get((req, res, next) => {
         const { id } = req.params;
         Courses.findByPk(id, {
-            attributes: { exclude: ["createdAt", "updatedAt"] }
+            attributes: { exclude: ["createdAt", "updatedAt"] },
         })
             .then(course => res.json(course))
             .catch(err => next(err));
