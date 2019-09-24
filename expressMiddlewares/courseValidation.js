@@ -11,7 +11,7 @@ module.exports = [
         .not()
         .isEmpty()
         .withMessage("Title is missing"),
-    check("desciption")
+    check("description")
         .not()
         .isEmpty()
         .withMessage("Description is missing"),
