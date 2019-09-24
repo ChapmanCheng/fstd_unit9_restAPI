@@ -64,7 +64,7 @@ router
 	.delete((req, res) => {
 		const { id } = req.params;
 		Courses.findByPk(id)
-			.destroy()
+			.then(course => course.destroy())
 			.then(() => res.status(204).end())
 			.catch(err => console.error(err));
 	});
