@@ -14,9 +14,11 @@ const { Courses } = db.Model;
 router
     .route("/")
     .get((req, res, next) =>
-        Courses.findAll()
+        Courses.findAll({
+            attributes: { exclude: ["createdAt", "updatedAt"] }
+        })
             .then(courses => res.json(courses))
-            .catch(err => console.error(err))
+            .catch(err => next(err))
     )
 
     .post((req, res, next) => {
@@ -30,7 +32,9 @@ router
     .route("/:id")
     .get((req, res, next) => {
         const { id } = req.params;
-        Courses.findByPk(id)
+        Courses.findByPk(id, {
+            attributes: { exclude: ["createdAt", "updatedAt"] }
+        })
             .then(course => res.json(course))
             .catch(err => next(err));
     })

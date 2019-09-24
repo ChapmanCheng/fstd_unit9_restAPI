@@ -17,11 +17,15 @@ const { Users } = db.Model;
 // routes for "/api/users"
 router
     .route("/")
-    .get(authenticateUser, (req, res) => {
+    .get(authenticateUser, (req, res, next) => {
         const user = req.currentUser;
-        res.status(200).json(user);
+        Users.findByPk(user.id, {
+            attributes: { exclude: ["password", "createdAt", "updatedAt"] }
+        })
+            .then(user => res.status(200).json(user))
+            .catch(err => next(err));
     })
-    .post(userValidation, async (req, res, next) => {
+    .post(userValidation, (req, res, next) => {
         const user = req.body;
 
         const errors = validationResult(req);
