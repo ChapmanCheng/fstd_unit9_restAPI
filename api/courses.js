@@ -2,13 +2,17 @@
 const express = require("express");
 const router = express.Router();
 
+// Modules
+const { validationResult } = require("express-validator");
+
 // Middleware
 const authenticateUser = require("../expressMiddlewares/authenticateUser");
 const checkSameUserId = require("../expressMiddlewares/checkSameUserId");
+const courseValidation = require("../expressMiddlewares/courseValidation");
 
 // db
 const db = require("../db");
-const { Courses } = db.Model;
+const { Courses, Users } = db.Model;
 
 // routes for "/api/courses"
 router
@@ -21,7 +25,13 @@ router
             .catch(err => next(err))
     )
 
-    .post((req, res, next) => {
+    .post(courseValidation, (req, res, next) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            const errorMessages = errors.array().map(err => err.msg);
+            return res.status(400).json({ errors: errorMessages });
+        } else {
         // req.body contains "title", "description", "userId", "estimatedTime" (allowNull), "materialsNeeded"(allowNull)
         Courses.create(req.body)
             .then(() => res.status(201).end())
