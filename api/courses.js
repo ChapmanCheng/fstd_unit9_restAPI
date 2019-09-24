@@ -20,6 +20,7 @@ router
     .get((req, res, next) =>
         Courses.findAll({
             attributes: { exclude: ["createdAt", "updatedAt"] },
+            include: [Users]
         })
             .then(courses => res.json(courses))
             .catch(err => next(err))
@@ -45,6 +46,7 @@ router
         const { id } = req.params;
         Courses.findByPk(id, {
             attributes: { exclude: ["createdAt", "updatedAt"] },
+            include: [Users]
         })
             .then(course => res.json(course))
             .catch(err => next(err));
