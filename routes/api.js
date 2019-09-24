@@ -55,14 +55,9 @@ router
 	.route("/courses/:id")
 	.put((req, res) => {
 		const { id } = req.params;
-		const { title, description, estimatedTime, materialsNeeded } = req.body;
+		// req.body contains "title", "description", "userId", "estimatedTime" (allowNull), "materialsNeeded"(allowNull)
 		Courses.findByPk(id)
-			.update({
-				title,
-				description,
-				estimatedTime,
-				materialsNeeded
-			})
+			.then(course => course.update(req.body))
 			.then(() => res.status(204).end())
 			.catch(err => console.error(err));
 	})
