@@ -37,3 +37,22 @@ npm start
 ```
 
 To test the Express server, browse to the URL [http://localhost:5000/](http://localhost:5000/).
+
+```
+Exceed Expectations
+1. "Add additional user email address validations to the POST /api/users route"
+
+please check sequelize validation in "./db/models/User.js" line 30-31
+and express-validator in "./expressMiddlewares/userValidation" line 19
+
+
+2."Ensure that a user can only edit and delete their own courses"
+
+added middleware in "./expressMiddlewares/checkSameUserId.js", and ran in line 38, 46 of "/api/courses.js"
+
+
+3.Update the Sequelize model queries for the Courses endpoint GET routes to filter out the following properties.
+
+added exclusion in "./api/users.js" line 23
+and in "./api/courses.js" line 18 and 36
+```
