@@ -26,7 +26,9 @@ module.exports = Userss = sequelize => {
 			},
 			emailAddress: {
 				type: Sequelize.STRING,
-				validate: { isEmail: { msg: "This is not an Email" } }
+				allowNull: false,
+				validate: { isEmail: { msg: "This is not an Email" } },
+				unique: true
 			},
 			password: {
 				type: Sequelize.STRING,
