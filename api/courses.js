@@ -35,7 +35,12 @@ router
         } else {
             // req.body contains "title", "description", "userId", "estimatedTime" (allowNull), "materialsNeeded"(allowNull)
             Courses.create(req.body)
-                .then(() => res.status(201).end())
+                .then(course =>
+                    res
+                        .status(201)
+                        .location(`/courses/${course.dataValues.id}`)
+                        .end()
+                )
                 .catch(err => next(err));
         }
     });
