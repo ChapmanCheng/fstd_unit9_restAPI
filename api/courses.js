@@ -10,6 +10,8 @@ const authenticateUser = require("../expressMiddlewares/authenticateUser");
 const checkSameUserId = require("../expressMiddlewares/checkSameUserId");
 const courseValidation = require("../expressMiddlewares/courseValidation");
 
+const { checkNotNull } = require("../helpler");
+
 // db
 const db = require("../db");
 const { Courses, Users } = db.Model;
@@ -48,6 +50,7 @@ router
             attributes: { exclude: ["createdAt", "updatedAt"] },
             include: [Users]
         })
+            .then(checkNotNull)
             .then(course => res.json(course))
             .catch(err => next(err));
     })
