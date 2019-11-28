@@ -1,8 +1,8 @@
 "use strict";
 
-// load modules
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 // const bodyParser = require("body-parser");
 
 // Load Rotues
@@ -19,20 +19,22 @@ const enableGlobalErrorLogging =
 // create the Express app
 const app = express();
 
-// setup morgan which gives us http request logging
-app.use(morgan("dev"));
-
-// set body parser
+/**
+ * * MIDDLEWARES
+ */
+app.use(morgan("dev")); // setup morgan which gives us http request logging
+app.use(cors()); // setup cors
+app.use(express.json()); // set body parser
 // app.use(bodyParser.urlencoded({ extended: false })); //! deprecated
-app.use(express.json());
 
 // setup a friendly greeting for the root route
-app.get("/", (req, res) => {
-    res.json({
-        message: "Welcome to the REST API project!"
-    });
-});
+app.get("/", (req, res) =>
+    res.json({ message: "Welcome to the REST API project!" })
+);
 
+/**
+ * * ROUTES
+ */
 app.use("/api/users/", userRoutes);
 app.use("/api/courses/", courseRoutes);
 
@@ -62,4 +64,5 @@ app.set("port", process.env.PORT || 5000);
 const server = app.listen(app.get("port"), () => {
     db.sequelize.sync();
     console.log(`Express server is listening on port ${server.address().port}`);
+    console.log("cors enabled");
 });
