@@ -34,7 +34,12 @@ router
             user.password = bcrypt.hashSync(user.password.toString(), 10); // password encryption
 
             Users.create(user) // user contains "password", "firstName", "lastName", "email"
-                .then(() => res.status(201).end())
+                .then(() =>
+                    res
+                        .status(201)
+                        .location("/")
+                        .end()
+                )
                 .catch(err => next(err));
         }
     });
