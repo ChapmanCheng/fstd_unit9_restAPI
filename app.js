@@ -39,10 +39,11 @@ app.use("/api/users/", userRoutes);
 app.use("/api/courses/", courseRoutes);
 
 // send 404 if no other route matched
-app.use((req, res) => {
-    res.status(404).json({
-        message: "Route Not Found"
-    });
+app.use((req, res, next) => {
+    // res.status(404).json({ message: "Route Not Found" });
+    const err =new Error("Route Not Found")
+    err.status = 404 
+    next(err)
 });
 
 // setup a global error handler
